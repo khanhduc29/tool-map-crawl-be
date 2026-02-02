@@ -7,7 +7,7 @@ const getCrawlTasks = async (req, res) => {
     try {
         let query = `
       SELECT *
-      FROM crawl_tasks
+      FROM public.crawl_tasks
     `;
         const params = [];
         const conditions = [];
@@ -117,7 +117,7 @@ const updateCrawlTask = async (req, res) => {
         COUNT(*) FILTER (WHERE status = 'success')     AS success,
         COUNT(*) FILTER (WHERE status = 'error')       AS error,
         COUNT(*)                                      AS total
-      FROM crawl_tasks
+      FROM public.crawl_tasks
       WHERE job_id = $1
       `, [jobId]);
         const stats = statsResult.rows[0];
@@ -164,7 +164,7 @@ const getCrawlTaskDetail = async (req, res) => {
     try {
         const result = await db_1.db.query(`
       SELECT *
-      FROM crawl_tasks
+      FROM public.crawl_tasks
       WHERE id = $1
       `, [id]);
         if (result.rowCount === 0) {

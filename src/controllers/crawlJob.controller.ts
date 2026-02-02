@@ -74,7 +74,7 @@ export const getCrawlJobs = async (req: Request, res: Response) => {
   try {
     let query = `
       SELECT *
-      FROM crawl_jobs
+      FROM public.crawl_jobs
     `;
     const params: any[] = [];
 

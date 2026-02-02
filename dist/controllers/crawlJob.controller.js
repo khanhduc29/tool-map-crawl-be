@@ -45,7 +45,7 @@ const getCrawlJobs = async (req, res) => {
     try {
         let query = `
       SELECT *
-      FROM crawl_jobs
+      FROM public.crawl_jobs
     `;
         const params = [];
         if (status) {
