@@ -8,8 +8,16 @@
 import app from "./app";
 import { db } from "./config/db";
 
+console.log("🔥 INDEX FILE LOADED");
+
 async function initTables() {
   console.log("🚀 Initializing database tables...");
+
+  // log DB đang kết nối
+  const dbInfo = await db.query(
+    "SELECT current_database(), current_schema()"
+  );
+  console.log("🧪 Connected DB:", dbInfo.rows[0]);
 
   await db.query(`CREATE EXTENSION IF NOT EXISTS "pgcrypto"`);
 
@@ -52,9 +60,10 @@ async function initTables() {
   try {
     await initTables();
 
-    const PORT = process.env.PORT || 3001;
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running at http://localhost:${PORT}`);
+    const PORT = Number(process.env.PORT || 10000);
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`🚀 Server running on port ${PORT}`);
     });
   } catch (err) {
     console.error("❌ INIT FAILED", err);
