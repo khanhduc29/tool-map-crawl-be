@@ -27,15 +27,21 @@ const pg_1 = __importDefault(require("pg"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const { Pool } = pg_1.default;
-if (!process.env.DATABASE_URL) {
-    throw new Error("❌ DATABASE_URL is not defined");
-}
-exports.db = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === "production"
-        ? { rejectUnauthorized: false }
-        : false,
-});
+const isProduction = process.env.NODE_ENV === "production";
+exports.db = new Pool(isProduction
+    ? {
+        // 👉 Render
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false },
+    }
+    : {
+        // 👉 Local
+        host: process.env.DB_HOST,
+        port: Number(process.env.DB_PORT),
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+    });
 exports.db.on("connect", () => {
     console.log("✅ PostgreSQL connected");
 });
