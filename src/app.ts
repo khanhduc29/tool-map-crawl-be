@@ -8,7 +8,10 @@ const app = express();
 // ✅ CORS (QUAN TRỌNG)
 app.use(
   cors({
-    origin: "https://tool-map-crawl-fe.vercel.app/", // FE Vite
+    origin: [
+      "https://tool-map-crawl-fe.vercel.app",
+      "http://localhost:5173",
+    ],
   })
 );
 
