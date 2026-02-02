@@ -10,7 +10,7 @@ const crawlTask_routes_1 = __importDefault(require("./routes/crawlTask.routes"))
 const app = (0, express_1.default)();
 // ✅ CORS (QUAN TRỌNG)
 app.use((0, cors_1.default)({
-    origin: "http://localhost:5173", // FE Vite
+    origin: "https://tool-map-crawl-fe.vercel.app/", // FE Vite
 }));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
