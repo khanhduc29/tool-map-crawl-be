@@ -28,20 +28,45 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const { Pool } = pg_1.default;
 const isProduction = process.env.NODE_ENV === "production";
+console.log("🔎 ===== DB ENV DEBUG =====");
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("isProduction:", isProduction);
+if (isProduction) {
+    console.log("👉 Using DATABASE_URL (Render)");
+    console.log("DATABASE_URL:", process.env.DATABASE_URL
+        ? process.env.DATABASE_URL.replace(/:\/\/.*@/, "://***@")
+        : "❌ NOT FOUND");
+}
+else {
+    console.log("👉 Using LOCAL Postgres");
+    console.log("DB_HOST:", process.env.DB_HOST);
+    console.log("DB_PORT:", process.env.DB_PORT);
+    console.log("DB_USER:", process.env.DB_USER);
+    console.log("DB_NAME:", process.env.DB_NAME);
+}
+console.log("🔎 =========================");
 exports.db = new Pool(isProduction
     ? {
-        // 👉 Render
         connectionString: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: false },
     }
     : {
-        // 👉 Local
         host: process.env.DB_HOST,
         port: Number(process.env.DB_PORT),
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
     });
-exports.db.on("connect", () => {
+exports.db.on("connect", async (client) => {
     console.log("✅ PostgreSQL connected");
+    try {
+        const res = await client.query("SELECT current_database(), current_schema()");
+        console.log("🧪 Connected DB:", res.rows[0]);
+    }
+    catch (err) {
+        console.error("❌ Test query failed", err);
+    }
+});
+exports.db.on("error", (err) => {
+    console.error("❌ PostgreSQL pool error:", err);
 });
