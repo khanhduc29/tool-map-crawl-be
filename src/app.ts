@@ -14,7 +14,10 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+// 👇 BẮT BUỘC CHO RENDER
+app.get("/", (_req, res) => {
+  res.status(200).send("OK");
+});
 app.use("/api/crawl-jobs", crawlJobRoutes);
 app.use("/api/crawl-tasks", crawlTaskRoutes);
 
