@@ -8,10 +8,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // app.listen(PORT, () => {
 //   console.log(`🚀 Server running at http://localhost:${PORT}`);
 // });
-const init_tables_1 = __importDefault(require("./init-tables"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const app_1 = __importDefault(require("./app"));
+const init_tables_1 = __importDefault(require("./init-tables"));
 (async () => {
-    await (0, init_tables_1.default)();
+    await (0, init_tables_1.default)(); // 🔥 PHẢI CHẠY
     const PORT = process.env.PORT || 3001;
     app_1.default.listen(PORT, () => {
         console.log(`🚀 Server running at http://localhost:${PORT}`);
