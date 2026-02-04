@@ -26,6 +26,7 @@ async function initTables() {
       total_limit INT NOT NULL,
       delay_seconds INT NOT NULL,
       deep_scan BOOLEAN DEFAULT false,
+      deep_scan_website BOOLEAN DEFAULT false,
       status VARCHAR(20) DEFAULT 'pending',
       created_at TIMESTAMP DEFAULT NOW()
     )
@@ -40,6 +41,7 @@ async function initTables() {
       result_limit INT NOT NULL,
       delay_seconds INT NOT NULL,
       deep_scan BOOLEAN DEFAULT false,
+      deep_scan_website BOOLEAN DEFAULT false,
       status VARCHAR(20) DEFAULT 'pending',
       result JSONB,
       error_message TEXT,

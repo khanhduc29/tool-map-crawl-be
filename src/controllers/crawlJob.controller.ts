@@ -14,6 +14,7 @@ export const createCrawlJob = async (
     delay,
     region,
     deepScan = false,
+    deepScanWebsite = false,
   } = req.body;
 
   if (!keyword || !limit || !delay) {
@@ -30,11 +31,11 @@ export const createCrawlJob = async (
   const jobResult = await db.query(
     `
     INSERT INTO crawl_jobs
-      (raw_keywords, address, region, total_limit, delay_seconds, deep_scan)
-    VALUES ($1,$2,$3,$4,$5,$6)
+      (raw_keywords, address, region, total_limit, delay_seconds, deep_scan, deep_scan_website)
+    VALUES ($1,$2,$3,$4,$5,$6,$7)
     RETURNING *
     `,
-    [keyword, address, region, limit, delay, deepScan]
+    [keyword, address, region, limit, delay, deepScan, deepScanWebsite]
   );
 
   const job = jobResult.rows[0];
@@ -51,11 +52,11 @@ export const createCrawlJob = async (
     const taskResult = await db.query(
       `
       INSERT INTO crawl_tasks
-        (job_id, keyword, address, region, result_limit, delay_seconds, deep_scan)
-      VALUES ($1,$2,$3,$4,$5,$6,$7)
+        (job_id, keyword, address, region, result_limit, delay_seconds, deep_scan, deep_scan_website)
+      VALUES ($1,$2,$3,$4,$5,$6,$7, $8)
       RETURNING *
       `,
-      [job.id, keywords[i], address, region, taskLimit, delay, deepScan]
+      [job.id, keywords[i], address, region, taskLimit, delay, deepScan, deepScanWebsite]
     );
 
     tasks.push(taskResult.rows[0]);

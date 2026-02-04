@@ -5,4 +5,6 @@ export interface CreateCrawlJobRequest {
   delay: number;
   region?: string;
   deepScan?: boolean;
+  deepScanWebsite?: boolean;
+
 }
